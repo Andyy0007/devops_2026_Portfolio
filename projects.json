@@ -1,0 +1,274 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "Kubernetes Multi-Tier Application Deployment",
+      "category": "Kubernetes",
+      "badge": "Kubernetes",
+      "description": "Deployed a scalable multi-tier microservices application on Kubernetes with automated scaling, health checks, and rolling updates.",
+      "technologies": ["Kubernetes", "Docker", "Helm", "YAML"],
+      "link": "#",
+      "details": {
+        "overview": "Complete Kubernetes deployment with multiple services, persistent storage, and advanced networking.",
+        "challenges": [
+          "Managing stateful and stateless applications",
+          "Implementing proper service discovery",
+          "Handling resource constraints"
+        ],
+        "solutions": [
+          "Used StatefulSets for stateful workloads",
+          "Implemented DNS-based service discovery",
+          "Set up resource quotas and limits"
+        ],
+        "results": [
+          "99.9% uptime",
+          "Automated scaling reduced manual intervention by 80%",
+          "Reduced deployment time from hours to minutes"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "CI/CD Pipeline with Jenkins & GitHub",
+      "category": "Jenkins",
+      "badge": "Jenkins",
+      "description": "Built end-to-end CI/CD pipeline using Jenkins for continuous integration, automated testing, and deployment to AWS.",
+      "technologies": ["Jenkins", "GitHub", "AWS", "Docker"],
+      "link": "#",
+      "details": {
+        "overview": "Automated build, test, and deployment pipeline with GitHub webhook integration.",
+        "challenges": [
+          "Coordinating multiple build stages",
+          "Managing secrets and credentials",
+          "Handling failed deployments"
+        ],
+        "solutions": [
+          "Used Jenkins pipelines (declarative)",
+          "Implemented credential management",
+          "Set up automated rollback on failure"
+        ],
+        "results": [
+          "Deployment frequency increased to 10x per day",
+          "Release cycle reduced from weeks to hours",
+          "Automated testing caught 95% of bugs pre-production"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "title": "Infrastructure as Code with Terraform",
+      "category": "Terraform",
+      "badge": "Terraform",
+      "description": "Provisioned complete AWS infrastructure using Terraform including VPC, EC2, RDS, and S3 with version control and state management.",
+      "technologies": ["Terraform", "AWS", "Git", "HCL"],
+      "link": "#",
+      "details": {
+        "overview": "Infrastructure as code approach with modular, reusable Terraform configurations.",
+        "challenges": [
+          "Managing Terraform state across teams",
+          "Ensuring infrastructure consistency",
+          "Handling infrastructure drift"
+        ],
+        "solutions": [
+          "Remote S3 backend with state locking",
+          "Terraform validation and linting",
+          "Regular drift detection checks"
+        ],
+        "results": [
+          "Infrastructure setup time reduced by 70%",
+          "Eliminated manual infrastructure configuration",
+          "Infrastructure now version controlled and reviewable"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "GitOps with ArgoCD",
+      "category": "GitOps",
+      "badge": "GitOps",
+      "description": "Implemented GitOps workflow using ArgoCD for declarative application deployment and synchronization with Git repositories.",
+      "technologies": ["ArgoCD", "Kubernetes", "Git", "GitOps"],
+      "link": "#",
+      "details": {
+        "overview": "Pull-based deployment model using GitOps principles with ArgoCD.",
+        "challenges": [
+          "Learning GitOps principles",
+          "Managing Helm charts in Git",
+          "Handling secrets in Git"
+        ],
+        "solutions": [
+          "Git as single source of truth",
+          "Helm chart management and versioning",
+          "Sealed Secrets for sensitive data"
+        ],
+        "results": [
+          "Fully auditable deployments",
+          "Self-healing applications",
+          "Easy rollback to any Git commit"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "Configuration Management with Ansible",
+      "category": "Ansible",
+      "badge": "Ansible",
+      "description": "Automated server provisioning and configuration management using Ansible playbooks for multiple environments.",
+      "technologies": ["Ansible", "Linux", "Python", "YAML"],
+      "link": "#",
+      "details": {
+        "overview": "Agentless configuration management with reusable playbooks and roles.",
+        "challenges": [
+          "Managing complex playbooks",
+          "Handling different Linux distributions",
+          "Coordinating dependent tasks"
+        ],
+        "solutions": [
+          "Organized roles and playbook structure",
+          "Distribution-specific tasks",
+          "Proper task dependencies and handlers"
+        ],
+        "results": [
+          "Configuration time reduced by 90%",
+          "Consistent server configurations",
+          "Reduced configuration drift by 95%"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "title": "GitHub Actions Workflow Automation",
+      "category": "GitHub Actions",
+      "badge": "GitHub Actions",
+      "description": "Created automated workflows using GitHub Actions for build, test, and deployment with Docker image push to registry.",
+      "technologies": ["GitHub Actions", "Docker", "YAML", "Automation"],
+      "link": "#",
+      "details": {
+        "overview": "Native GitHub CI/CD with Actions workflow automation.",
+        "challenges": [
+          "Learning GitHub Actions syntax",
+          "Managing secrets in workflows",
+          "Optimizing workflow performance"
+        ],
+        "solutions": [
+          "Reusable workflows and actions",
+          "GitHub secrets management",
+          "Caching strategies for faster builds"
+        ],
+        "results": [
+          "Average build time reduced to 5 minutes",
+          "No external CI/CD tool required",
+          "Cost savings on CI/CD infrastructure"
+        ]
+      }
+    }
+  ],
+  "skills": {
+    "containerization": {
+      "title": "🐳 Containerization & Orchestration",
+      "skills": ["Docker", "Kubernetes", "Docker Compose", "Container Registry"]
+    },
+    "iac": {
+      "title": "🏗️ Infrastructure as Code",
+      "skills": ["Terraform", "Ansible", "CloudFormation", "Helm"]
+    },
+    "cicd": {
+      "title": "⚡ CI/CD & Automation",
+      "skills": ["Jenkins", "GitHub Actions", "GitOps", "ArgoCD"]
+    },
+    "cloud": {
+      "title": "☁️ Cloud Platforms",
+      "skills": ["AWS (EC2, S3, RDS, ECS)", "AWS VPC", "AWS Lambda", "IAM"]
+    },
+    "vcs": {
+      "title": "📝 Version Control",
+      "skills": ["Git", "GitHub", "GitLab", "Bitbucket"]
+    },
+    "programming": {
+      "title": "💻 Programming & Scripting",
+      "skills": ["Python", "Bash/Shell", "Java", "YAML"]
+    },
+    "linux": {
+      "title": "🐧 Operating Systems",
+      "skills": ["Linux (Ubuntu, CentOS)", "Shell Scripting", "System Administration", "Linux Networking"]
+    },
+    "monitoring": {
+      "title": "📊 Monitoring & Logging",
+      "skills": ["Prometheus", "Grafana", "ELK Stack", "CloudWatch"]
+    }
+  },
+  "certifications": [
+    {
+      "title": "AWS Certified Solutions Architect",
+      "issuer": "Amazon Web Services",
+      "level": "Associate",
+      "date": "2024"
+    },
+    {
+      "title": "Certified Kubernetes Administrator",
+      "issuer": "Linux Foundation",
+      "level": "Professional",
+      "date": "2024"
+    },
+    {
+      "title": "HashiCorp Certified: Terraform",
+      "issuer": "HashiCorp",
+      "level": "Associate",
+      "date": "2024"
+    },
+    {
+      "title": "Docker Certified Associate",
+      "issuer": "Docker Inc.",
+      "level": "Professional",
+      "date": "2023"
+    }
+  ],
+  "experience": [
+    {
+      "title": "DevOps Engineer",
+      "company": "Your Company Name",
+      "period": "Present",
+      "type": "Full-time",
+      "description": "Design and implement CI/CD pipelines using Jenkins and GitHub Actions",
+      "responsibilities": [
+        "Design and implement CI/CD pipelines using Jenkins and GitHub Actions",
+        "Manage containerized applications with Docker and Kubernetes",
+        "Provision and manage AWS infrastructure using Terraform",
+        "Implement monitoring and logging solutions with Prometheus and Grafana",
+        "Automate configuration management using Ansible"
+      ]
+    },
+    {
+      "title": "Junior DevOps Engineer",
+      "company": "Previous Company",
+      "period": "2022 - Present",
+      "type": "Full-time",
+      "description": "Assisted in deployment and scaling of applications on AWS",
+      "responsibilities": [
+        "Assisted in deployment and scaling of applications on AWS",
+        "Implemented Docker containers for microservices",
+        "Supported infrastructure maintenance and optimization",
+        "Collaborated with development teams on deployment strategies",
+        "Created bash scripts for system administration tasks"
+      ]
+    },
+    {
+      "title": "System Administrator",
+      "company": "Earlier Role",
+      "period": "2021 - 2022",
+      "type": "Full-time",
+      "description": "Managed Linux servers and infrastructure",
+      "responsibilities": [
+        "Managed Linux servers and infrastructure",
+        "Performed system maintenance and updates",
+        "Implemented backup and disaster recovery solutions",
+        "Monitored system performance and security"
+      ]
+    }
+  ],
+  "stats": {
+    "projects": 6,
+    "skills": 16,
+    "dedication": "100%"
+  }
+}
