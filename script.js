@@ -1,347 +1,209 @@
 // ===================================
-// Navigation Menu Toggle
+// Portfolio interactions
 // ===================================
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-if (hamburger) {
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
-    });
+function closeMenu() {
+    navMenu?.classList.remove('active');
+    hamburger?.classList.remove('active');
 }
 
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    });
+hamburger?.addEventListener('click', () => {
+    navMenu?.classList.toggle('active');
+    hamburger.classList.toggle('active');
 });
 
-// ===================================
-// Smooth Scrolling for Navigation Links
-// ===================================
+hamburger?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        hamburger.click();
+    }
+});
+
+navLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu();
+});
+
+// Smooth scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+    anchor.addEventListener('click', event => {
+        const selector = anchor.getAttribute('href');
+        if (!selector || selector === '#') return;
+        const target = document.querySelector(selector);
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            event.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
 });
 
-// ===================================
-// Intersection Observer for Animations
-// ===================================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
+// Scroll reveal
+const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('animate-in');
-            observer.unobserve(entry.target);
+            revealObserver.unobserve(entry.target);
         }
     });
-}, observerOptions);
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
-// Observe all cards and sections
 document.querySelectorAll('.skill-category, .project-card, .cert-card, .timeline-item').forEach(el => {
-    observer.observe(el);
+    el.style.opacity = '0';
+    revealObserver.observe(el);
+});
+
+// Active navigation link
+const sections = [...document.querySelectorAll('section[id]')];
+const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            navLinks.forEach(link => link.classList.toggle(
+                'active', link.getAttribute('href') === `#${entry.target.id}`
+            ));
+        }
+    });
+}, { rootMargin: '-25% 0px -65% 0px' });
+sections.forEach(section => sectionObserver.observe(section));
+
+// ===================================
+// Make the portfolio content accurate
+// ===================================
+const heroTitle = document.querySelector('.hero-title');
+if (heroTitle) heroTitle.innerHTML = 'Hi, I\'m Anadi.<br><span class="highlight">DevOps & Observability Engineer</span>';
+
+const heroSubtitle = document.querySelector('.hero-subtitle');
+if (heroSubtitle) heroSubtitle.textContent = 'I automate infrastructure, deployments and monitoring.';
+
+const heroDescription = document.querySelector('.hero-description');
+if (heroDescription) heroDescription.textContent = '3 years of hands-on experience across AppDynamics, Dynatrace, Linux and production monitoring — building deeper DevOps capabilities with AWS, Kubernetes, Terraform and CI/CD.';
+
+// Replace placeholder project cards with real portfolio projects.
+const projectCards = document.querySelectorAll('.project-card');
+const projectData = [
+    {
+        title: 'AWS EKS DevOps Platform', badge: 'Featured',
+        description: 'End-to-end DevOps platform covering Terraform infrastructure, Ansible configuration, Docker, Kubernetes, Helm, CI/CD and Prometheus/Grafana observability.',
+        tech: ['AWS', 'EKS', 'Terraform', 'Ansible', 'Docker', 'Helm', 'GitHub Actions', 'Prometheus', 'Grafana'],
+        link: 'https://github.com/Andyy0007/aws-eks-devops-platform', linkText: 'View on GitHub →'
+    },
+    {
+        title: 'Docker Python Application', badge: 'Docker',
+        description: 'Flask application containerized with Docker and paired with PostgreSQL and Kubernetes components for hands-on DevOps practice.',
+        tech: ['Python', 'Flask', 'Docker', 'PostgreSQL', 'Kubernetes'],
+        link: 'https://github.com/Andyy0007/docker-python-app', linkText: 'View on GitHub →'
+    },
+    {
+        title: 'Enterprise APM & Observability', badge: 'Production',
+        description: 'Enterprise monitoring and operations work across application, server, database, synthetic and infrastructure monitoring, alerting and RCA workflows.',
+        tech: ['AppDynamics', 'Dynatrace', 'Moogsoft', 'Service Xchange', 'ServiceNow'],
+        link: '#experience', linkText: 'See Experience →'
+    }
+];
+
+projectCards.forEach((card, index) => {
+    const data = projectData[index];
+    if (!data) return;
+    card.classList.toggle('featured', index === 0);
+    const header = card.querySelector('.project-header');
+    const title = card.querySelector('.project-header h3');
+    const badge = card.querySelector('.project-badge');
+    const description = card.querySelector('.project-description');
+    const tech = card.querySelector('.project-tech');
+    const link = card.querySelector('.project-link');
+    if (title) title.textContent = data.title;
+    if (badge) badge.textContent = data.badge;
+    if (description) description.textContent = data.description;
+    if (tech) tech.innerHTML = data.tech.map(item => `<span>${item}</span>`).join('');
+    if (link) {
+        link.href = data.link;
+        link.textContent = data.linkText;
+        if (!data.link.startsWith('#')) {
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+        }
+    }
 });
 
 // ===================================
-// Contact Form Handling
+// Real contact form — static GitHub Pages compatible
 // ===================================
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(contactForm);
-        const name = contactForm.querySelector('input[type="text"]').value;
-        const email = contactForm.querySelector('input[type="email"]').value;
-        const message = contactForm.querySelector('textarea').value;
-        
-        // Create mailto link
-        const mailtoLink = `mailto:your.email@example.com?subject=Portfolio Contact from ${name}&body=${encodeURIComponent(message)}%0D%0A%0D%0AFrom: ${email}`;
-        
-        // Show success message
-        const submitBtn = contactForm.querySelector('.btn-primary');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Message sent! 🎉';
-        submitBtn.style.background = 'var(--success)';
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Reset button after 3 seconds
-        setTimeout(() => {
-            submitBtn.textContent = originalText;
-            submitBtn.style.background = '';
-        }, 3000);
-        
-        // You can also use this to send actual email via a service
-        // window.location.href = mailtoLink;
+    // FormSubmit handles the server-side email delivery; no backend is needed on GitHub Pages.
+    contactForm.action = 'https://formsubmit.co/anadimishra208@gmail.com';
+    contactForm.method = 'POST';
+
+    const addHidden = (name, value) => {
+        if (!contactForm.querySelector(`input[name="${name}"]`)) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            contactForm.prepend(input);
+        }
+    };
+
+    addHidden('_subject', 'New Portfolio Contact — Anadi Mishra');
+    addHidden('_template', 'table');
+    addHidden('_captcha', 'true');
+    addHidden('_next', `${window.location.origin}${window.location.pathname}#contact`);
+
+    contactForm.addEventListener('submit', () => {
+        const button = contactForm.querySelector('button[type="submit"]');
+        const status = document.getElementById('formStatus');
+        if (button) {
+            button.disabled = true;
+            button.textContent = 'Sending…';
+        }
+        if (status) status.textContent = 'Sending your message…';
     });
 }
 
-// ===================================
-// Scroll Spy - Highlight Active Navigation
-// ===================================
-window.addEventListener('scroll', () => {
-    let current = '';
-    const sections = document.querySelectorAll('section');
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (scrollY >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// ===================================
-// Add CSS for Scroll Spy
-// ===================================
-const style = document.createElement('style');
-style.textContent = `
-    .nav-link.active {
-        color: var(--primary-color);
-        border-bottom-color: var(--primary-color);
-    }
-    
-    .animate-in {
-        animation: slideInUp 0.6s ease-out forwards;
-    }
-    
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-`;
-document.head.appendChild(style);
-
-// ===================================
-// Parallax Effect on Hero Section
-// ===================================
-window.addEventListener('scroll', () => {
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const scrollPosition = window.scrollY;
-        hero.style.backgroundPosition = `0 ${scrollPosition * 0.5}px`;
-    }
-});
-
-// ===================================
-// Mobile Menu Responsive
-// ===================================
-const navMenuStyles = `
-    @media (max-width: 768px) {
-        .nav-menu {
-            position: fixed;
-            left: -100%;
-            top: 70px;
-            flex-direction: column;
-            background-color: #0F1419;
-            width: 100%;
-            text-align: center;
-            transition: 0.3s;
-            box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-            padding: 2rem 0;
-        }
-        
-        .nav-menu.active {
-            left: 0;
-        }
-        
-        .nav-item {
-            margin: 1rem 0;
-        }
-    }
-`;
-
-const styleSheet = document.createElement('style');
-styleSheet.innerHTML = navMenuStyles;
-document.head.appendChild(styleSheet);
-
-// ===================================
-// Keyboard Navigation
-// ===================================
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    }
-});
-
-// ===================================
-// Add Loading Animation
-// ===================================
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-});
-
-// ===================================
-// Skill Badge Hover Effects
-// ===================================
-const skillBadges = document.querySelectorAll('.skill-badge');
-skillBadges.forEach(badge => {
-    badge.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-3px) scale(1.1)';
-    });
-    
-    badge.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// ===================================
-// Project Card Click Handler
-// ===================================
-const projectCards = document.querySelectorAll('.project-card');
-projectCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-    });
-});
-
-// ===================================
-// Dynamic Skill Chart
-// ===================================
-function createSkillChart() {
-    const skills = document.querySelectorAll('.skill-badge');
-    let skillCount = 0;
-    
-    skills.forEach(skill => {
-        skillCount++;
-    });
-    
-    console.log(`Total Skills: ${skillCount}`);
-}
-
-createSkillChart();
-
-// ===================================
-// Copy Email to Clipboard
-// ===================================
+// Copy email on click (without breaking the mailto action)
 const emailLink = document.querySelector('a[href^="mailto:"]');
-if (emailLink) {
-    emailLink.addEventListener('click', function(e) {
-        const email = this.textContent;
-        navigator.clipboard.writeText(email).then(() => {
-            const originalText = this.textContent;
-            this.textContent = 'Copied! 📋';
-            setTimeout(() => {
-                this.textContent = originalText;
-            }, 2000);
-        });
-    });
-}
-
-// ===================================
-// Console Welcome Message
-// ===================================
-console.log('%c🚀 Welcome to DevOps Portfolio!', 'font-size: 20px; color: #FF6B6B; font-weight: bold;');
-console.log('%cLooking for a DevOps Engineer? Let\'s connect!', 'font-size: 14px; color: #4ECDC4;');
-console.log('%cSkills: Docker, Kubernetes, AWS, Terraform, Jenkins, GitHub Actions, GitOps & More!', 'font-size: 12px; color: #45B7D1;');
-
-// ===================================
-// Smooth Fade In on Page Load
-// ===================================
-document.addEventListener('DOMContentLoaded', () => {
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section, index) => {
-        section.style.opacity = '0';
-        section.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s forwards`;
-    });
+emailLink?.addEventListener('contextmenu', event => {
+    const email = emailLink.textContent.trim();
+    navigator.clipboard?.writeText(email).catch(() => {});
 });
 
-const fadeInStyle = document.createElement('style');
-fadeInStyle.textContent = `
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-`;
-document.head.appendChild(fadeInStyle);
-
-// ===================================
-// Back to Top Button
-// ===================================
-const backToTopButton = document.createElement('button');
-backToTopButton.innerHTML = '↑';
-backToTopButton.className = 'back-to-top';
-backToTopButton.style.cssText = `
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #FF6B6B, #FF5252);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
-    display: none;
-    z-index: 999;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-`;
-
-document.body.appendChild(backToTopButton);
+// Back to top
+const backToTop = document.createElement('button');
+backToTop.type = 'button';
+backToTop.className = 'back-to-top';
+backToTop.setAttribute('aria-label', 'Back to top');
+backToTop.textContent = '↑';
+backToTop.style.cssText = 'position:fixed;bottom:28px;right:28px;width:46px;height:46px;border:0;border-radius:50%;background:linear-gradient(135deg,#FF6B6B,#FF5252);color:#fff;font-size:22px;cursor:pointer;display:none;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.25);';
+document.body.appendChild(backToTop);
 
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopButton.style.display = 'flex';
-        backToTopButton.style.alignItems = 'center';
-        backToTopButton.style.justifyContent = 'center';
-    } else {
-        backToTopButton.style.display = 'none';
-    }
+    backToTop.style.display = window.scrollY > 500 ? 'grid' : 'none';
 });
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
+// Small visual polish injected without requiring a framework.
+const polish = document.createElement('style');
+polish.textContent = `
+    .hero-title .highlight { color: #FF6B6B; }
+    .eyebrow { display:inline-block; padding:7px 12px; margin-bottom:16px; border:1px solid rgba(69,183,209,.4); border-radius:999px; color:#9fe8f4; background:rgba(69,183,209,.08); font-size:.85rem; font-weight:700; }
+    .hero-links { display:flex; gap:18px; flex-wrap:wrap; margin-top:20px; }
+    .hero-links a { color:var(--text-secondary); text-decoration:none; }
+    .hero-links a:hover { color:var(--secondary-color); }
+    .project-card.featured { border-color:rgba(69,183,209,.65); box-shadow:0 12px 40px rgba(69,183,209,.12); }
+    .project-card .project-link { margin-top:auto; }
+    .contact-form input,.contact-form textarea { width:100%; padding:14px 16px; margin-bottom:14px; border:1px solid var(--border-color); border-radius:8px; background:#202938; color:var(--text-primary); font:inherit; }
+    .contact-form input:focus,.contact-form textarea:focus { outline:none; border-color:var(--accent-color); box-shadow:0 0 0 3px rgba(69,183,209,.12); }
+    .form-status { min-height:24px; margin-top:10px; color:var(--secondary-color); font-size:.9rem; }
+    .availability { margin-top:18px; color:#48BB78; font-size:.92rem; }
+    .availability::before { content:'●'; margin-right:8px; }
+    .animate-in { animation: portfolioReveal .6s ease-out forwards; }
+    @keyframes portfolioReveal { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    @media (prefers-reduced-motion:reduce) { .animate-in { animation:none; opacity:1 !important; } }
+`;
+document.head.appendChild(polish);
 
-backToTopButton.addEventListener('mouseenter', function() {
-    this.style.transform = 'scale(1.1)';
-});
-
-backToTopButton.addEventListener('mouseleave', function() {
-    this.style.transform = 'scale(1)';
-});
+console.log('%c🚀 Anadi Mishra | DevOps & Observability Portfolio', 'font-size:18px;font-weight:700;');
+console.log('%cAWS • Kubernetes • Docker • Terraform • CI/CD • AppDynamics • Dynatrace', 'font-size:12px;');
